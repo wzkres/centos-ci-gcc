@@ -7,4 +7,4 @@ RUN yum -y install \
         gcc gcc-c++ glibc-devel \
         libtool make cmake \
         pkgconfig pkgconf-m4 pkgconf-pkg-config \
-        git
+        git && yum clean all
