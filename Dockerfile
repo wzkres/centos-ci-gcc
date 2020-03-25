@@ -1,10 +1,6 @@
 FROM centos:8
 
-LABEL version="1.0.0"
-LABEL description="CentOS CI build slave with \
-					gcc, git, cmake."
-
-RUN yum -y update
+RUN yum update
 
 RUN yum -y install \
         autoconf automake binutils \
