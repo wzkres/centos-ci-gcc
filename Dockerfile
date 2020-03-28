@@ -1,9 +1,10 @@
 FROM centos:8
 
-RUN yum -y update
+LABEL maintainer="wzkres" \
+        description="CentOS 8 CI build slave image with gcc, git, cmake for c/c++ projects"
 
-RUN yum -y install \
-        autoconf automake binutils \
+RUN yum -y update && yum -y install \
+        autoconf automake \
         gcc gcc-c++ glibc-devel \
         libtool make cmake \
         pkgconfig pkgconf-m4 pkgconf-pkg-config \
