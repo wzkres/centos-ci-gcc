@@ -1,2 +1,2 @@
 # centos-ci-gcc
-CentOS CI build slave with gcc, git, cmake
+CentOS 8 CI build slave image with gcc, git, cmake for c/c++ projects
