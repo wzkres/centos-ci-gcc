@@ -4,7 +4,7 @@ LABEL maintainer="wzkres" \
         description="CentOS 7 CI build slave image with gcc, git, cmake for c/c++ projects"
         
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
-RUN yum -y install wget devtoolset-8 make cmake cmake3 git
+RUN yum -y install wget devtoolset-8 cmake cmake3 git
 
 RUN scl enable devtoolset-8 bash
 
@@ -23,3 +23,6 @@ RUN wget https://www.nasm.us/pub/nasm/releasebuilds/2.13.03/nasm-2.13.03.tar.gz 
   rm -rf nasm-2.13.03.tar.gz
 
 RUN yum clean all
+
+ENTRYPOINT ["/usr/bin/scl", "enable", "devtoolset-8", "--"]
+CMD ["/usr/bin/scl", "enable", "devtoolset-8", "--", "/bin/bash"]
