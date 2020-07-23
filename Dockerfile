@@ -4,7 +4,7 @@ LABEL maintainer="wzkres" \
         description="CentOS 7 CI build slave image with gcc, git, cmake for c/c++ projects"
         
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
-RUN yum -y install wget devtoolset-8 cmake cmake3 git
+RUN yum -y install wget devtoolset-8 automake cmake cmake3 git
 
 RUN scl enable devtoolset-8 bash
 
