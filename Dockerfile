@@ -1,7 +1,7 @@
-FROM centos:latest
+FROM centos:7.8.2003
 
 LABEL maintainer="wzkres" \
-        description="CentOS 8 CI build slave image with gcc, git, cmake for c/c++ projects"
+        description="CentOS 7 CI build slave image with gcc, git, cmake for c/c++ projects"
 
 RUN curl -o /etc/yum.repos.d/nasm.repo https://www.nasm.us/nasm.repo
 
