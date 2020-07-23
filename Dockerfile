@@ -11,12 +11,15 @@ RUN yum -y install \
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20
 
-RUN wget https://www.nasm.us/pub/nasm/releasebuilds/2.13.03/nasm-2.13.03.tar.gz
-RUN tar xvf nasm-2.13.03.tar.gz
-RUN cd nasm-2.13.03
-RUN ./configure
-RUN make
-RUN make install
-RUN cd .. && rm -rf nasm-2.13.03 && rm -rf nasm-2.13.03.tar.gz
+# Compile NASM
+RUN wget https://www.nasm.us/pub/nasm/releasebuilds/2.13.03/nasm-2.13.03.tar.bz2 && \
+  tar xjvf nasm-2.13.03.tar.bz2 && \
+  cd nasm-2.13.03 && \
+  ./configure && \
+  make && \
+  make install && \
+  cd .. && \
+  rm -rf nasm-2.13.03 && \
+  rm -rf nasm-2.13.03.tar.bz2
 
 RUN yum clean all
