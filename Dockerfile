@@ -5,6 +5,9 @@ LABEL maintainer="wzkres" \
 
 RUN yum -y update && yum -y install \
         gcc gcc-c++ glibc-devel \
-        nasm libtool make cmake git
-        
+        nasm libtool make cmake cmake3 git
+
+RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
+RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20
+
 RUN yum clean all
