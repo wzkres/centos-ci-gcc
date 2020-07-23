@@ -5,7 +5,7 @@ LABEL maintainer="wzkres" \
         
 RUN yum -y update && yum -y install epel-release
 RUN yum -y install \
-        gcc gcc-c++ glibc-devel \
+        wget gcc gcc-c++ glibc-devel \
         libtool make cmake cmake3 git
 
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
