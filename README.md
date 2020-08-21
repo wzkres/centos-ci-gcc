@@ -1,2 +1,2 @@
 # centos-ci-gcc
-CentOS 7 CI build slave image with gcc, nasm, git, cmake for c/c++ projects
+CentOS CI build slave image with gcc, nasm, git, cmake, etc for c/c++ projects
