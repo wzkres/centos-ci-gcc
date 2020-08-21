@@ -12,7 +12,7 @@ RUN scl enable devtoolset-8 bash
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20
 
-RUN scal enable rh-python36 bash
+RUN scl enable rh-python36 bash
 RUN pip3 install meson
 
 # Compile NASM
@@ -28,5 +28,5 @@ RUN wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.03/nasm-2.15.03.tar.gz 
 
 RUN yum clean all
 
-ENTRYPOINT ["/usr/bin/scl", "enable", "devtoolset-8", "--"]
-CMD ["/usr/bin/scl", "enable", "devtoolset-8", "--", "/bin/bash"]
+ENTRYPOINT ["/usr/bin/scl", "enable", "devtoolset-8", "rh-python36", "--"]
+CMD ["/usr/bin/scl", "enable", "devtoolset-8", "rh-python36", "--", "/bin/bash"]
