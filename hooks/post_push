@@ -2,12 +2,12 @@
 
 set -e
 
-# Parse image name for repo name
-tagStart=$(expr index "$IMAGE_NAME" :)
-repoName=${IMAGE_NAME:0:tagStart-1}
-
-# Tag and push image for each additional tag
-for tag in {centos-8,8}; do
-    docker tag $IMAGE_NAME ${repoName}:${tag}
-    docker push ${repoName}:${tag}
-done
+if [ $DOCKER_TAG == "centos-7" ]; then
+	docker tag $IMAGE_NAME $DOCKER_REPO:7
+    docker push $DOCKER_REPO:7
+elif [ $DOCKER_TAG == "latest" ]; then
+	for tag in {centos-8,8}; do
+    	docker tag $IMAGE_NAME $DOCKER_REPO:${tag}
+    	docker push $DOCKER_REPO:${tag}
+	done
+fi
