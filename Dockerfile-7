@@ -6,7 +6,8 @@ LABEL maintainer="wzkres" \
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
 RUN yum -y install wget devtoolset-8 automake libtool autoconf cmake cmake3 git
 
-RUN scl enable devtoolset-8 bash
+#RUN scl enable devtoolset-8 bash
+SHELL [ "/usr/bin/scl", "enable", "devtoolset-8"]
 
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20
