@@ -11,6 +11,10 @@ RUN scl enable devtoolset-8 bash
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20
 
+RUN gcc -v
+RUN g++ -v
+RUN cmake --version
+
 # Download & Compile NASM
 RUN wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.03/nasm-2.15.03.tar.gz && \
   tar zxvf nasm-2.15.03.tar.gz && \
@@ -27,7 +31,7 @@ RUN wget --no-check-certificate https://github.com/danmar/cppcheck/archive/2.1.t
   tar zxvf 2.1.tar.gz && \
   mkdir cppcheck-2.1/cmake_build && \
   cd cppcheck-2.1/cmake_build && \
-  cmake -DCMAKE_BUILD_TYPE=Release ../ && \
+  cmake3 -DCMAKE_BUILD_TYPE=Release ../ && \
   make && \
   make install && \
   cd ../../ && \
