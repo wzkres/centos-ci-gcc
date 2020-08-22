@@ -1,7 +1,7 @@
 FROM centos:7.8.2003
 
 LABEL maintainer="wzkres" \
-        description="CentOS 7 CI build slave image with gcc, git, cmake, etc for c/c++ projects"
+        description="CentOS 7 CI build worker image with gcc, git, cmake, cppcheck, sonarscanner etc for c/c++ projects"
         
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
 RUN yum -y install wget devtoolset-8 automake libtool autoconf cmake cmake3 git
@@ -11,7 +11,7 @@ RUN scl enable devtoolset-8 bash
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20
 
-# Compile NASM
+# Download & Compile NASM
 RUN wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.03/nasm-2.15.03.tar.gz && \
   tar zxvf nasm-2.15.03.tar.gz && \
   cd nasm-2.15.03 && \
@@ -22,7 +22,30 @@ RUN wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.03/nasm-2.15.03.tar.gz 
   rm -rf nasm-2.15.03 && \
   rm -rf nasm-2.15.03.tar.gz
 
+# Download & Compile Cppcheck
+RUN wget --no-check-certificate https://github.com/danmar/cppcheck/archive/2.1.tar.gz && \
+  tar zxvf 2.1.tar.gz && \
+  mkdir cppcheck-2.1/cmake_build && \
+  cd cppcheck-2.1/cmake_build && \
+  cmake -DCMAKE_BUILD_TYPE=Release ../ && \
+  make && \
+  make install && \
+  cd ../../ && \
+  rm -rf cppcheck-2.1 && \
+  rm -rf 2.1.tar.gz
+
+RUN cppcheck --version
+
+# Download SonarScanner CLI
+RUN wget --no-check-certificate https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
+  unzip sonar-scanner-cli-4.4.0.2170-linux.zip && \
+  rm -rf sonar-scanner-cli-4.4.0.2170-linux.zip
+
 RUN yum clean all
+
+ENV PATH "$PATH:$HOME/sonar-scanner-cli-4.4.0.2170-linux/bin"
+
+RUN sonar-scanner -v
 
 ENTRYPOINT ["/usr/bin/scl", "enable", "devtoolset-8", "--"]
 CMD ["/usr/bin/scl", "enable", "devtoolset-8", "--", "/bin/bash"]
