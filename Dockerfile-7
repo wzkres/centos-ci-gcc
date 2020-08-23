@@ -38,12 +38,11 @@ RUN wget --no-check-certificate https://github.com/danmar/cppcheck/archive/2.1.t
 # Download SonarScanner CLI
 RUN wget --no-check-certificate https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
   unzip sonar-scanner-cli-4.4.0.2170-linux.zip && \
-  rm -rf sonar-scanner-cli-4.4.0.2170-linux.zip && \
-  pwd && ls -la
+  rm -rf sonar-scanner-cli-4.4.0.2170-linux.zip
 
 RUN yum clean all
 
-ENV PATH "$PATH:$HOME/sonar-scanner-cli-4.4.0.2170-linux/bin"
+ENV PATH "$PATH:/sonar-scanner-cli-4.4.0.2170-linux/bin"
 
 ENTRYPOINT ["/usr/bin/scl", "enable", "devtoolset-8", "--"]
 CMD ["/usr/bin/scl", "enable", "devtoolset-8", "--", "/bin/bash"]
