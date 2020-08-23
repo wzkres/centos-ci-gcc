@@ -7,14 +7,10 @@ RUN yum -y update && yum -y install epel-release && yum -y install centos-releas
 RUN yum -y install wget devtoolset-8 automake libtool autoconf cmake cmake3 git
 
 #RUN scl enable devtoolset-8 bash
-SHELL [ "/usr/bin/scl", "enable", "devtoolset-8"]
+SHELL ["/usr/bin/scl", "enable", "devtoolset-8"]
 
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20
-
-RUN gcc -v
-RUN g++ -v
-RUN cmake --version
 
 # Download & Compile NASM
 RUN wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.03/nasm-2.15.03.tar.gz && \
@@ -32,25 +28,22 @@ RUN wget --no-check-certificate https://github.com/danmar/cppcheck/archive/2.1.t
   tar zxvf 2.1.tar.gz && \
   mkdir cppcheck-2.1/cmake_build && \
   cd cppcheck-2.1/cmake_build && \
-  cmake3 -DCMAKE_BUILD_TYPE=Release ../ && \
+  cmake -DCMAKE_BUILD_TYPE=Release ../ && \
   make && \
   make install && \
   cd ../../ && \
   rm -rf cppcheck-2.1 && \
   rm -rf 2.1.tar.gz
 
-RUN cppcheck --version
-
 # Download SonarScanner CLI
 RUN wget --no-check-certificate https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
   unzip sonar-scanner-cli-4.4.0.2170-linux.zip && \
-  rm -rf sonar-scanner-cli-4.4.0.2170-linux.zip
+  rm -rf sonar-scanner-cli-4.4.0.2170-linux.zip && \
+  pwd && ls -la
 
 RUN yum clean all
 
 ENV PATH "$PATH:$HOME/sonar-scanner-cli-4.4.0.2170-linux/bin"
-
-RUN sonar-scanner -v
 
 ENTRYPOINT ["/usr/bin/scl", "enable", "devtoolset-8", "--"]
 CMD ["/usr/bin/scl", "enable", "devtoolset-8", "--", "/bin/bash"]
