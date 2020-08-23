@@ -42,7 +42,7 @@ RUN wget --no-check-certificate https://binaries.sonarsource.com/Distribution/so
 
 RUN yum clean all
 
-ENV PATH "$PATH:/sonar-scanner-cli-4.4.0.2170-linux/bin"
+ENV PATH "$PATH:/sonar-scanner-4.4.0.2170-linux/bin"
 
 ENTRYPOINT ["/usr/bin/scl", "enable", "devtoolset-8", "--"]
 CMD ["/usr/bin/scl", "enable", "devtoolset-8", "--", "/bin/bash"]
