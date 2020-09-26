@@ -29,7 +29,7 @@ RUN wget --no-check-certificate https://github.com/danmar/cppcheck/archive/2.1.t
   mkdir cppcheck-2.1/cmake_build && \
   cd cppcheck-2.1/cmake_build && \
   cmake -DCMAKE_BUILD_TYPE=Release ../ && \
-  make -j8 && \
+  make && \
   make install && \
   cd ../../ && \
   rm -rf cppcheck-2.1 && \
@@ -41,7 +41,7 @@ RUN wget --no-check-certificate https://github.com/llvm/llvm-project/releases/do
   mkdir llvm-project-10.0.1/cmake_build && \
   cd llvm-project-10.0.1/cmake_build && \
   cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;" ../llvm && \
-  make -j8 install-clang-tidy && \
+  make install-clang-tidy && \
   cd ../../ && \
   rm -rf llvm-project-10.0.1 && \
   rm -rf llvm-project-10.0.1.tar.xz
