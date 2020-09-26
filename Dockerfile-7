@@ -13,42 +13,42 @@ RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20
 
 # Download & Compile NASM
-RUN wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.03/nasm-2.15.03.tar.gz && \
-  tar zxvf nasm-2.15.03.tar.gz && \
+RUN wget -q --no-check-certificate https://www.nasm.us/pub/nasm/releasebuilds/2.15.03/nasm-2.15.03.tar.gz && \
+  tar zxf nasm-2.15.03.tar.gz && \
   cd nasm-2.15.03 && \
   ./configure && \
-  make && \
+  make -s -j4 && \
   make install && \
   cd .. && \
   rm -rf nasm-2.15.03 && \
   rm -rf nasm-2.15.03.tar.gz
 
 # Download & Compile Cppcheck
-RUN wget --no-check-certificate https://github.com/danmar/cppcheck/archive/2.1.tar.gz && \
-  tar zxvf 2.1.tar.gz && \
+RUN wget -q --no-check-certificate https://github.com/danmar/cppcheck/archive/2.1.tar.gz && \
+  tar zxf 2.1.tar.gz && \
   mkdir cppcheck-2.1/cmake_build && \
   cd cppcheck-2.1/cmake_build && \
   cmake -DCMAKE_BUILD_TYPE=Release ../ && \
-  make && \
+  make -s -j4 && \
   make install && \
   cd ../../ && \
   rm -rf cppcheck-2.1 && \
   rm -rf 2.1.tar.gz
   
 # Download & Compile clang-tidy 10.0.1
-RUN wget --no-check-certificate https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/llvm-project-10.0.1.tar.xz && \
-  tar xvf llvm-project-10.0.1.tar.xz && \
+RUN wget -q --no-check-certificate https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/llvm-project-10.0.1.tar.xz && \
+  tar xf llvm-project-10.0.1.tar.xz && \
   mkdir llvm-project-10.0.1/cmake_build && \
   cd llvm-project-10.0.1/cmake_build && \
   cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;" ../llvm && \
-  make install-clang-tidy && \
+  make -s -j4 install-clang-tidy && \
   cd ../../ && \
   rm -rf llvm-project-10.0.1 && \
   rm -rf llvm-project-10.0.1.tar.xz
 
 # Download SonarScanner CLI
-RUN wget --no-check-certificate https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
-  unzip sonar-scanner-cli-4.4.0.2170-linux.zip && \
+RUN wget -q --no-check-certificate https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
+  unzip -q sonar-scanner-cli-4.4.0.2170-linux.zip && \
   rm -rf sonar-scanner-cli-4.4.0.2170-linux.zip
 
 RUN yum clean all
