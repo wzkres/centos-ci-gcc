@@ -5,7 +5,7 @@ LABEL maintainer="wzkres" \
         
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
 RUN yum -y install wget devtoolset-8 automake libtool autoconf cmake cmake3 git
-RUN yum -y install rh-python36 ninja-build
+RUN yum -y install rh-python36 ninja-build patchelf
 
 RUN scl enable devtoolset-8 bash
 
