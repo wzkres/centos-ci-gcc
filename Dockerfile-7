@@ -13,9 +13,6 @@ SHELL ["/usr/bin/scl", "enable", "devtoolset-8"]
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
 RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20
 
-# Download & Install CUDA 11.1.0
-https://developer.download.nvidia.cn/compute/cuda/repos/rhel7/x86_64/cuda-11.1.0-1.x86_64.rpm
-
 # Download & Compile NASM
 RUN wget -q --no-check-certificate https://www.nasm.us/pub/nasm/releasebuilds/2.15.03/nasm-2.15.03.tar.gz && \
   tar zxf nasm-2.15.03.tar.gz && \
