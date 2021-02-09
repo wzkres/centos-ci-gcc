@@ -25,16 +25,16 @@ RUN wget -q --no-check-certificate https://www.nasm.us/pub/nasm/releasebuilds/2.
   rm -rf nasm-2.15.03.tar.gz
 
 # Download & Compile Cppcheck
-RUN wget -q --no-check-certificate https://github.com/danmar/cppcheck/archive/2.1.tar.gz && \
-  tar zxf 2.1.tar.gz && \
-  mkdir cppcheck-2.1/cmake_build && \
-  cd cppcheck-2.1/cmake_build && \
+RUN wget -q --no-check-certificate https://github.com/danmar/cppcheck/archive/2.3.tar.gz && \
+  tar zxf 2.3.tar.gz && \
+  mkdir cppcheck-2.3/cmake_build && \
+  cd cppcheck-2.3/cmake_build && \
   cmake -DCMAKE_BUILD_TYPE=Release ../ && \
   make -s -j4 && \
   make install && \
   cd ../../ && \
-  rm -rf cppcheck-2.1 && \
-  rm -rf 2.1.tar.gz
+  rm -rf cppcheck-2.3 && \
+  rm -rf 2.3.tar.gz
   
 # Download & Compile clang-tidy 10.0.1
 RUN wget -q --no-check-certificate https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.1/llvm-project-10.0.1.tar.xz && \
@@ -48,13 +48,13 @@ RUN wget -q --no-check-certificate https://github.com/llvm/llvm-project/releases
   rm -rf llvm-project-10.0.1.tar.xz
 
 # Download SonarScanner CLI
-RUN wget -q --no-check-certificate https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.4.0.2170-linux.zip && \
-  unzip -q sonar-scanner-cli-4.4.0.2170-linux.zip && \
-  rm -rf sonar-scanner-cli-4.4.0.2170-linux.zip
+RUN wget -q --no-check-certificate https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.0.2311-linux.zip && \
+  unzip -q sonar-scanner-cli-4.6.0.2311-linux.zip && \
+  rm -rf sonar-scanner-cli-4.6.0.2311-linux.zip
 
 RUN yum clean all
 
-ENV PATH "$PATH:/sonar-scanner-4.4.0.2170-linux/bin"
+ENV PATH "$PATH:/sonar-scanner-4.6.0.2311-linux/bin"
 
 ENTRYPOINT ["/usr/bin/scl", "enable", "devtoolset-8", "--"]
 CMD ["/usr/bin/scl", "enable", "devtoolset-8", "--", "/bin/bash"]
