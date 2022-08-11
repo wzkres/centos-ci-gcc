@@ -7,6 +7,8 @@ LABEL maintainer="wzkres" \
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
 RUN yum -y install wget devtoolset-8 automake libtool autoconf cmake cmake3 git
 RUN yum -y install rh-python36 ninja-build patchelf
+# libva dependencies
+RUN yum -y install libdrm-devel
 
 RUN scl enable devtoolset-8 bash
 
@@ -32,6 +34,9 @@ RUN git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
 RUN cd nv-codec-headers && make install && cd ..
 
 RUN yum clean all
+
+ENV PATH "/usr/local/cuda-11.7/bin${PATH:+:${PATH}}"
+ENV LD_LIBRARY_PATH "/usr/local/cuda-11.7/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 
 ENTRYPOINT ["/usr/bin/scl", "enable", "devtoolset-8", "rh-python36", "--"]
 CMD ["/usr/bin/scl", "enable", "devtoolset-8", "rh-python36", "--", "/bin/bash"]
