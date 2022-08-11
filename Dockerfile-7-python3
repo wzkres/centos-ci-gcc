@@ -1,4 +1,5 @@
-FROM centos:7.8.2003
+#FROM centos:7.8.2003
+FROM nvidia/cuda:11.7.0-devel-centos7
 
 LABEL maintainer="wzkres" \
         description="CentOS 7 CI build worker image with gcc, git, cmake, python3, meson, ninja-build, etc for c/c++ projects"
@@ -25,6 +26,10 @@ RUN wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.03/nasm-2.15.03.tar.gz 
   cd .. && \
   rm -rf nasm-2.15.03 && \
   rm -rf nasm-2.15.03.tar.gz
+
+# ffnvcodec
+RUN git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
+RUN cd nv-codec-headers && make install && cd –
 
 RUN yum clean all
 
