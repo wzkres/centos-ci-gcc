@@ -2,10 +2,12 @@
 FROM nvidia/cuda:11.7.0-devel-centos7
 
 LABEL maintainer="wzkres" \
-        description="CentOS 7 CI build worker image with gcc, git, cmake, cppcheck, sonarscanner etc for c/c++ projects"
+        description="CentOS 7 CI build worker image with gcc, git, cmake, cppcheck, sonarscanner, cuda, etc for c/c++ projects"
         
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
 RUN yum -y install wget devtoolset-8 automake libtool autoconf cmake cmake3 git
+# libva dependencies
+RUN yum -y install libdrm-devel
 
 #RUN scl enable devtoolset-8 bash
 SHELL ["/usr/bin/scl", "enable", "devtoolset-8"]
@@ -54,7 +56,8 @@ RUN wget -q --no-check-certificate https://binaries.sonarsource.com/Distribution
 
 RUN yum clean all
 
-ENV PATH "$PATH:/sonar-scanner-4.6.2.2472-linux/bin"
+ENV PATH "/usr/local/cuda-11.7/bin:/sonar-scanner-4.6.2.2472-linux/bin${PATH:+:${PATH}}"
+ENV LD_LIBRARY_PATH "/usr/local/cuda-11.7/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 
 ENTRYPOINT ["/usr/bin/scl", "enable", "devtoolset-8", "--"]
 CMD ["/usr/bin/scl", "enable", "devtoolset-8", "--", "/bin/bash"]
