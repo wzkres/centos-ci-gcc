@@ -9,6 +9,8 @@ RUN yum -y install wget devtoolset-8 automake libtool autoconf cmake cmake3 git
 RUN yum -y install rh-python36 ninja-build patchelf
 # libva dependencies
 RUN yum -y install libdrm-devel
+# v4l2 dependencies
+RUN yum -y install alsa-lib-devel
 
 RUN scl enable devtoolset-8 bash
 
