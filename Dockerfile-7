@@ -43,12 +43,12 @@ RUN wget -q --no-check-certificate https://github.com/danmar/cppcheck/archive/re
 # Download & Compile clang-tidy 15.0.6
 RUN wget -q --no-check-certificate https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.6/llvm-project-15.0.6.src.tar.xz && \
   tar xf llvm-project-15.0.6.src.tar.xz && \
-  mkdir llvm-project-15.0.6/cmake_build && \
-  cd llvm-project-15.0.6/cmake_build && \
+  mkdir llvm-project-15.0.6.src/cmake_build && \
+  cd llvm-project-15.0.6.src/cmake_build && \
   cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;" ../llvm && \
   make -s -j4 install-clang-tidy && \
   cd ../../ && \
-  rm -rf llvm-project-15.0.6 && \
+  rm -rf llvm-project-15.0.6.src && \
   rm -rf llvm-project-15.0.6.src.tar.xz
 
 # Download SonarScanner CLI
