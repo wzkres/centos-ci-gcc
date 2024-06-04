@@ -13,9 +13,9 @@ RUN yum -y install alsa-lib-devel
 
 # Enable devtoolset-8
 RUN echo "source /opt/rh/devtoolset-8/enable" >> /etc/bashrc
+RUN echo "source /opt/rh/python36/enable" >> /etc/bashrc
 SHELL ["/bin/bash", "--login", "-c"]
 RUN gcc --version
-RUN scl enable rh-python36 bash
 RUN python --version
 
 # Download & Compile CMake
