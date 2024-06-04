@@ -2,10 +2,10 @@
 FROM nvidia/cuda:11.7.1-devel-centos7
 
 LABEL maintainer="wzkres" \
-  description="CentOS 7 CI build worker image with gcc, git, cmake, cppcheck, sonarscanner, cuda, etc for c/c++ projects"
+  description="CentOS 7 CI build worker image with gcc, git, cmake, python3, cppcheck, sonarscanner, cuda, etc for c/c++ projects"
         
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
-RUN yum -y install wget devtoolset-8 automake libtool autoconf git
+RUN yum -y install wget devtoolset-8 automake libtool autoconf git rh-python36
 # libva dependencies
 RUN yum -y install libdrm-devel
 # v4l2 dependencies
@@ -13,6 +13,7 @@ RUN yum -y install alsa-lib-devel
 
 #RUN scl enable devtoolset-8 bash
 SHELL ["/usr/bin/scl", "enable", "devtoolset-8"]
+SHELL ["/usr/bin/scl", "enable", "rh-python36"]
 
 # Download & Compile CMake
 RUN wget -q --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.29.4/cmake-3.29.4.tar.gz && \
