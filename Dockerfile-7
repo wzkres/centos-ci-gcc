@@ -11,10 +11,10 @@ RUN yum -y install libdrm-devel
 # v4l2 dependencies
 RUN yum -y install alsa-lib-devel
 
-RUN scl enable devtoolset-8 bash
-RUN scl enable rh-python36 bash
-#SHELL ["/usr/bin/scl", "enable", "devtoolset-8"]
-#SHELL ["/usr/bin/scl", "enable", "rh-python36"]
+# Enable devtoolset-8
+RUN echo "source /opt/rh/devtoolset-8/enable" >> /etc/bashrc
+SHELL ["/bin/bash", "--login", "-c"]
+RUN gcc --version
 
 # Download & Compile CMake
 RUN wget -q --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.29.4/cmake-3.29.4.tar.gz && \
