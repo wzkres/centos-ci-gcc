@@ -15,6 +15,8 @@ RUN yum -y install alsa-lib-devel
 RUN echo "source /opt/rh/devtoolset-8/enable" >> /etc/bashrc
 SHELL ["/bin/bash", "--login", "-c"]
 RUN gcc --version
+RUN scl enable rh-python36 bash
+RUN python --version
 
 # Download & Compile CMake
 RUN wget -q --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.29.4/cmake-3.29.4.tar.gz && \
