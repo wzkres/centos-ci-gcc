@@ -5,7 +5,7 @@ LABEL maintainer="wzkres" \
   description="CentOS 7 CI build worker image with gcc, git, cmake, cppcheck, sonarscanner, cuda, etc for c/c++ projects"
         
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
-RUN yum -y install wget devtoolset-8 automake libtool autoconf cmake cmake3 git
+RUN yum -y install wget devtoolset-8 automake libtool autoconf git
 # libva dependencies
 RUN yum -y install libdrm-devel
 # v4l2 dependencies
@@ -14,8 +14,17 @@ RUN yum -y install alsa-lib-devel
 #RUN scl enable devtoolset-8 bash
 SHELL ["/usr/bin/scl", "enable", "devtoolset-8"]
 
-RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
-RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20
+# Download & Compile CMake
+RUN wget -q --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.29.4/cmake-3.29.4.tar.gz && \
+  tar zxf cmake-3.29.4.tar.gz && \
+  cd cmake-3.29.4 && \
+  ./bootstrap && \
+  make -s -j4 && \
+  make install && \
+  cd .. && \
+  rm -rf cmake-3.29.4 && \
+  rm -rf cmake-3.29.4.tar.gz && \
+  cmake --version
 
 # Download & Compile NASM
 RUN wget -q --no-check-certificate https://www.nasm.us/pub/nasm/releasebuilds/2.15.03/nasm-2.15.03.tar.gz && \
