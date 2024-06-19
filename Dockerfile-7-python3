@@ -1,11 +1,11 @@
 #FROM centos:7.8.2003
-FROM nvidia/cuda:11.7.0-devel-centos7
+FROM nvidia/cuda:11.7.1-devel-centos7
 
 LABEL maintainer="wzkres" \
   description="CentOS 7 CI build worker image with gcc, git, cmake, python3, meson, ninja-build, cuda, etc for c/c++ projects"
         
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
-RUN yum -y install wget devtoolset-8 automake libtool autoconf cmake cmake3 git
+RUN yum -y install wget devtoolset-8 automake libtool autoconf git
 RUN yum -y install rh-python36 ninja-build patchelf
 # libva dependencies
 RUN yum -y install libdrm-devel
@@ -14,13 +14,25 @@ RUN yum -y install alsa-lib-devel
 # postgres dependencies
 RUN yum -y install bison
 
-RUN scl enable devtoolset-8 bash
-
-RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10
-RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20
-
-RUN scl enable rh-python36 bash
+# Enable devtoolset-8
+RUN echo "source /opt/rh/devtoolset-8/enable" >> /etc/bashrc
+RUN echo "source /opt/rh/rh-python36/enable" >> /etc/bashrc
+SHELL ["/bin/bash", "--login", "-c"]
+RUN gcc --version
+RUN python --version
 RUN pip3 install meson
+
+# Download & Compile CMake
+RUN wget -q --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.29.4/cmake-3.29.4.tar.gz && \
+  tar zxf cmake-3.29.4.tar.gz && \
+  cd cmake-3.29.4 && \
+  ./bootstrap -- -DCMAKE_USE_OPENSSL=OFF && \
+  make -s -j4 && \
+  make install && \
+  cd .. && \
+  rm -rf cmake-3.29.4 && \
+  rm -rf cmake-3.29.4.tar.gz && \
+  cmake --version
 
 # Compile NASM
 RUN wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.03/nasm-2.15.03.tar.gz && \
