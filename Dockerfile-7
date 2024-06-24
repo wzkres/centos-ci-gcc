@@ -2,7 +2,7 @@
 FROM nvidia/cuda:11.7.1-devel-centos7
 
 LABEL maintainer="wzkres" \
-  description="CentOS 7 CI build worker image with gcc, git, cmake, python3, cppcheck, sonarscanner, cuda, etc for c/c++ projects"
+  description="CentOS 7 CI build worker image with gcc, git, cmake, python3, gcovr, cppcheck, sonarscanner, cuda, etc for c/c++ projects"
         
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
 RUN yum -y install wget devtoolset-8 automake libtool autoconf git rh-python36
@@ -17,6 +17,7 @@ RUN echo "source /opt/rh/rh-python36/enable" >> /etc/bashrc
 SHELL ["/bin/bash", "--login", "-c"]
 RUN gcc --version
 RUN python --version
+RUN pip3 install gcovr
 
 # Download & Compile CMake
 RUN wget -q --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.29.4/cmake-3.29.4.tar.gz && \
