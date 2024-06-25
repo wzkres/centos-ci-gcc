@@ -72,7 +72,7 @@ RUN wget -q --no-check-certificate https://binaries.sonarsource.com/Distribution
 
 RUN yum clean all
 
-ENV PATH "/usr/local/cuda-11.7/bin:/sonar-scanner-4.8.0.2856-linux/bin${PATH:+:${PATH}}"
+ENV PATH "/usr/local/cuda-11.7/bin:/opt/rh/rh-python36/root/usr/bin:/sonar-scanner-4.8.0.2856-linux/bin${PATH:+:${PATH}}"
 ENV LD_LIBRARY_PATH "/usr/local/cuda-11.7/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 
 ENTRYPOINT ["/usr/bin/scl", "enable", "devtoolset-8", "--"]
