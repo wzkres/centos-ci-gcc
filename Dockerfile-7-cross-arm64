@@ -8,6 +8,12 @@ ADD CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
 RUN yum clean all && yum makecache
 
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
+
+# Update centos-release-scl .repo files
+ADD CentOS-SCLo-scl.repo /etc/yum.repos.d/CentOS-SCLo-scl.repo
+ADD CentOS-SCLo-scl-rh.repo /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
+RUN yum clean all && yum makecache
+
 RUN yum -y install wget devtoolset-8 automake libtool git
 
 # Enable devtoolset-8
