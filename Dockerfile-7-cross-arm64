@@ -5,12 +5,19 @@ LABEL maintainer="wzkres" \
 
 # Update CentOS-base.repo file
 ADD CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+RUN yum clean all && yum make cache
 
 RUN yum -y update && yum -y install epel-release
-RUN yum -y install wget automake libtool git
+RUN yum -y install wget devtoolset-8 automake libtool git
+
+# Enable devtoolset-8
+RUN echo "source /opt/rh/devtoolset-8/enable" >> /etc/bashrc
+RUN echo "source /opt/rh/rh-python36/enable" >> /etc/bashrc
+SHELL ["/bin/bash", "--login", "-c"]
+RUN gcc --version
 
 # Download prebuilt ARM64 toolchain
-RUN wget -q --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz?revision=2e88a73f-d233-4f96-b1f4-d8b36e9bb0b9&rev=2e88a73fd2334f96b1f4d8b36e9bb0b9&hash=860E7F96815DDDC743E32589F0924011
+#RUN wget -q --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz?revision=2e88a73f-d233-4f96-b1f4-d8b36e9bb0b9&rev=2e88a73fd2334f96b1f4d8b36e9bb0b9&hash=860E7F96815DDDC743E32589F0924011
 
 # Download & Compile CMake
 RUN wget -q --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.29.4/cmake-3.29.4.tar.gz && \
