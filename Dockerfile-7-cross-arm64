@@ -1,0 +1,24 @@
+FROM centos:7.9.2009
+
+LABEL maintainer="wzkres" \
+  description="CentOS 7 CI build worker image with  gcc, git, cmake, python3, meson, ninja-build, etc for cross compiling aarch64 c/c++ projects"
+        
+RUN yum -y update && yum -y install epel-release
+RUN yum -y install wget automake libtool git
+
+# Download prebuilt ARM64 toolchain
+RUN wget -q --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz?revision=2e88a73f-d233-4f96-b1f4-d8b36e9bb0b9&rev=2e88a73fd2334f96b1f4d8b36e9bb0b9&hash=860E7F96815DDDC743E32589F0924011
+
+# Download & Compile CMake
+RUN wget -q --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.29.4/cmake-3.29.4.tar.gz && \
+  tar zxf cmake-3.29.4.tar.gz && \
+  cd cmake-3.29.4 && \
+  ./bootstrap -- -DCMAKE_USE_OPENSSL=OFF && \
+  make -s -j4 && \
+  make install && \
+  cd .. && \
+  rm -rf cmake-3.29.4 && \
+  rm -rf cmake-3.29.4.tar.gz && \
+  cmake --version
+
+RUN yum clean all
