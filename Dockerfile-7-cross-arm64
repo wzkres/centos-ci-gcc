@@ -18,12 +18,14 @@ RUN yum -y install wget devtoolset-8 automake libtool git
 
 # Enable devtoolset-8
 RUN echo "source /opt/rh/devtoolset-8/enable" >> /etc/bashrc
-RUN echo "source /opt/rh/rh-python36/enable" >> /etc/bashrc
+#RUN echo "source /opt/rh/rh-python36/enable" >> /etc/bashrc
 SHELL ["/bin/bash", "--login", "-c"]
 RUN gcc --version
 
 # Download prebuilt ARM64 toolchain
-#RUN wget -q --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz?revision=2e88a73f-d233-4f96-b1f4-d8b36e9bb0b9&rev=2e88a73fd2334f96b1f4d8b36e9bb0b9&hash=860E7F96815DDDC743E32589F0924011
+RUN wget -q --no-check-certificate "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz?revision=2e88a73f-d233-4f96-b1f4-d8b36e9bb0b9&rev=2e88a73fd2334f96b1f4d8b36e9bb0b9&hash=860E7F96815DDDC743E32589F0924011" -O gcc-arm.tar.gz
+RUN tar xvf gcc-arm.tar.gz -C /usr/local/ARM-toolchain/
+ADD arm64_linux.cmake /usr/local/ARM-toolchain/
 
 # Download & Compile CMake
 RUN wget -q --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.29.4/cmake-3.29.4.tar.gz && \
@@ -38,3 +40,12 @@ RUN wget -q --no-check-certificate https://github.com/Kitware/CMake/releases/dow
   cmake --version
 
 RUN yum clean all
+
+ENV AR="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-ar"
+ENV AS="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-as"
+ENV CC="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc"
+ENV CXX="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-g++"
+ENV RANLIB="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-ranlib"
+ENV STRIP="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-strip"
+ENV PATH="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin:$PATH"
+CMD [ "/bin/sh", "-c", "export"]
