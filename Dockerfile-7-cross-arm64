@@ -24,6 +24,7 @@ RUN gcc --version
 
 # Download prebuilt ARM64 toolchain
 RUN wget -q --no-check-certificate "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz?revision=2e88a73f-d233-4f96-b1f4-d8b36e9bb0b9&rev=2e88a73fd2334f96b1f4d8b36e9bb0b9&hash=860E7F96815DDDC743E32589F0924011" -O gcc-arm.tar.gz
+RUN mkdir -p /usr/local/ARM-toolchain/
 RUN tar xvf gcc-arm.tar.gz -C /usr/local/ARM-toolchain/
 ADD arm64_linux.cmake /usr/local/ARM-toolchain/
 
