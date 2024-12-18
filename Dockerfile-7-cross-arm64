@@ -5,7 +5,7 @@ LABEL maintainer="wzkres" \
 
 # Update CentOS-base.repo file
 ADD CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
-RUN yum clean all && yum make cache
+RUN yum clean all && yum makecache
 
 RUN yum -y update && yum -y install epel-release
 RUN yum -y install wget devtoolset-8 automake libtool git
