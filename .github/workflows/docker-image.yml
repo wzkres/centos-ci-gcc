@@ -1,10 +1,25 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ "master" ]
+  workflow_dispatch:
+    inputs:
+      IMAGE_NAME:
+        type: choice
+        description: 'Select the docker image to build and push'
+        required: true
+        options:
+          - centos-7-python3
+          - centos-7
+          - centos-7-cross-arm64
+        default: 'centos-7'
+#  push:
+#    branches: [ "master" ]
 #  pull_request:
 #    branches: [ "master" ]
+
+env:
+    DOCKER_FILE: ${{ fromJSON('{"centos-7-python3":"Dockerfile-7-python3","centos-7":"Dockerfile-7","centos-7-cross-arm64":"Dockerfile-7-cross-arm64"}')[github.event.inputs.IMAGE_NAME] }}
+    DOCKER_IMAGE: "${{ github.event.inputs.IMAGE_NAME }}"
 
 jobs:
   build:
@@ -24,6 +39,14 @@ jobs:
     -
       name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
+    -
+      name: Build and push ${{ github.event.inputs.IMAGE_NAME }}
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./${{ env.DOCKER_FILE }}
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/centos-ci-gcc:${{ github.event.inputs.IMAGE_NAME }}
     # -
     #   name: Build and push Dockerfile-7-python3
     #   uses: docker/build-push-action@v2
@@ -32,12 +55,12 @@ jobs:
     #     file: ./Dockerfile-7-python3
     #     push: true
     #     tags: ${{ secrets.DOCKER_USERNAME }}/centos-ci-gcc:centos-7-python3
-    -
-      name: Build and push Dockerfile-7
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        file: ./Dockerfile-7
-        push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/centos-ci-gcc:centos-7
+    # -
+    #   name: Build and push Dockerfile-7
+    #   uses: docker/build-push-action@v2
+    #   with:
+    #     context: .
+    #     file: ./Dockerfile-7
+    #     push: true
+    #     tags: ${{ secrets.DOCKER_USERNAME }}/centos-ci-gcc:centos-7
         
