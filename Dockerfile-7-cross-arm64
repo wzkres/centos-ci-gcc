@@ -14,7 +14,9 @@ ADD CentOS-SCLo-scl.repo /etc/yum.repos.d/CentOS-SCLo-scl.repo
 ADD CentOS-SCLo-scl-rh.repo /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
 RUN yum clean all && yum makecache
 
-RUN yum -y install wget devtoolset-8 automake libtool git
+RUN yum -y install wget devtoolset-8 automake libtool git patchelf
+# postgres dependencies
+RUN yum -y install bison
 
 # Enable devtoolset-8
 RUN echo "source /opt/rh/devtoolset-8/enable" >> /etc/bashrc
