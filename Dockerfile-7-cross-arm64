@@ -50,5 +50,5 @@ ENV CC="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bi
 ENV CXX="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-g++"
 ENV RANLIB="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-ranlib"
 ENV STRIP="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-strip"
-ENV PATH="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin:$PATH"
+ENV PATH="/usr/local/ARM-toolchain/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin:/opt/rh/devtoolset-8/root/usr/bin:$PATH"
 CMD [ "/bin/sh", "-c", "export"]
