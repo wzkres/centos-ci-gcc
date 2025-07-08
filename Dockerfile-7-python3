@@ -3,7 +3,11 @@ FROM nvidia/cuda:11.7.1-devel-centos7
 
 LABEL maintainer="wzkres" \
   description="CentOS 7 CI build worker image with gcc, git, cmake, python3, meson, ninja-build, cuda, etc for c/c++ projects"
-        
+
+# Update CentOS-base.repo file
+ADD CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+RUN yum clean all && yum makecache
+
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
 RUN yum -y install wget devtoolset-8 automake libtool autoconf git
 RUN yum -y install rh-python36 ninja-build patchelf
