@@ -11,6 +11,8 @@ RUN yum -y install rh-python36 ninja-build patchelf
 RUN yum -y install libdrm-devel
 # v4l2 dependencies
 RUN yum -y install alsa-lib-devel
+# FFmpeg avdevice dependencies
+RUN yum -y install libasound2-dev
 # postgres dependencies
 RUN yum -y install bison
 
