@@ -4,8 +4,10 @@ FROM nvidia/cuda:11.7.1-devel-centos7
 LABEL maintainer="wzkres" \
   description="CentOS 7 CI build worker image with gcc, git, cmake, python3, meson, ninja-build, cuda, etc for c/c++ projects"
 
-# Update CentOS-base.repo file
+# Update repo files
 ADD CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+ADD CentOS-SCLo-scl.repo /etc/yum.repos.d/CentOS-SCLo-scl.repo
+ADD CentOS-SCLo-scl-rh.repo /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
 RUN yum clean all && yum makecache
 
 RUN yum -y update && yum -y install epel-release && yum -y install centos-release-scl
